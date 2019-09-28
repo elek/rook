@@ -35,6 +35,9 @@ cockroachdb.%:
 minio.%:
 	@$(MAKE) -C minio PLATFORM=$*
 
+ozone.%:
+	@$(MAKE) -C ozone PLATFORM=$*
+
 edgefs.%:
 	@$(MAKE) -C edgefs PLATFORM=$*
 
@@ -47,6 +50,8 @@ cassandra.%:
 yugabytedb.%:
 	@$(MAKE) -C yugabytedb PLATFORM=$*
 
+ozone.%:
+	@$(MAKE) -C ozone PLATFORM=$*
 
 do.build.images.%: $(foreach i,$(IMAGES), $(i).%);
 

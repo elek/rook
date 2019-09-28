@@ -1,0 +1,40 @@
+
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: rook-ozone-operator
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - secrets
+  - pods
+  - services
+  - configmaps
+  verbs:
+  - get
+  - watch
+  - create
+  - update
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  - daemonsets
+  verbs:
+  - get
+  - create
+  - update
+- apiGroups:
+  - ozone.rook.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - rook.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
