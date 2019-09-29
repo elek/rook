@@ -98,7 +98,7 @@ spec:
       serviceAccountName: rook-ozone-operator
       containers:
       - name: rook-ozone-operator
-        image: elek/rook-ozone
+        image: rook/ozone:master
         imagePullPolicy: Always
         args:
         - ozone
