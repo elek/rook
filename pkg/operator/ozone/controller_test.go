@@ -54,7 +54,7 @@ func TestOnAdd(t *testing.T) {
 	clientset := testop.New(3)
 	context := &clusterd.Context{Clientset: clientset}
 	controller := NewController(context)
-
+	controller.templateDir = "./templates"
 	// Call onAdd given the specified object store.
 	controller.onAdd(objectstore)
 
