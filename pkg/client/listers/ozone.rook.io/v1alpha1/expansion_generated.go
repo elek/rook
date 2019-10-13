@@ -18,10 +18,10 @@ limitations under the License.
 
 package v1alpha1
 
-// ObjectStoreListerExpansion allows custom methods to be added to
-// ObjectStoreLister.
-type ObjectStoreListerExpansion interface{}
+// OzoneObjectStoreListerExpansion allows custom methods to be added to
+// OzoneObjectStoreLister.
+type OzoneObjectStoreListerExpansion interface{}
 
-// ObjectStoreNamespaceListerExpansion allows custom methods to be added to
-// ObjectStoreNamespaceLister.
-type ObjectStoreNamespaceListerExpansion interface{}
+// OzoneObjectStoreNamespaceListerExpansion allows custom methods to be added to
+// OzoneObjectStoreNamespaceLister.
+type OzoneObjectStoreNamespaceListerExpansion interface{}

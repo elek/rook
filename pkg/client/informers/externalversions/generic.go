@@ -107,8 +107,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Nfs().V1alpha1().NFSServers().Informer()}, nil
 
 		// Group=ozone.rook.io, Version=v1alpha1
-	case ozonerookiov1alpha1.SchemeGroupVersion.WithResource("objectstores"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Ozone().V1alpha1().ObjectStores().Informer()}, nil
+	case ozonerookiov1alpha1.SchemeGroupVersion.WithResource("ozoneobjectstores"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Ozone().V1alpha1().OzoneObjectStores().Informer()}, nil
 
 		// Group=rook.io, Version=v1alpha2
 	case v1alpha2.SchemeGroupVersion.WithResource("volumes"):

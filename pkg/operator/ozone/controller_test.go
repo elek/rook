@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Rook Authors. All rights reserved.
+Copyright 2019 The Rook Authors. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -35,12 +35,12 @@ const (
 //test the basic behavior of Ozone controller
 func TestOnAdd(t *testing.T) {
 	namespace := "rook-ozone-123"
-	objectstore := &ozonealpha.ObjectStore{
+	objectstore := &ozonealpha.OzoneObjectStore{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      appName,
 			Namespace: namespace,
 		},
-		Spec: ozonealpha.ObjectStoreSpec{
+		Spec: ozonealpha.OzoneObjectStoreSpec{
 			OzoneVersion: ozonealpha.OzoneVersionSpec{
 				Image: imageName,
 			},

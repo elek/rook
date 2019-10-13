@@ -24,8 +24,8 @@ import (
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
-	// ObjectStores returns a ObjectStoreInformer.
-	ObjectStores() ObjectStoreInformer
+	// OzoneObjectStores returns a OzoneObjectStoreInformer.
+	OzoneObjectStores() OzoneObjectStoreInformer
 }
 
 type version struct {
@@ -39,7 +39,7 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
 }
 
-// ObjectStores returns a ObjectStoreInformer.
-func (v *version) ObjectStores() ObjectStoreInformer {
-	return &objectStoreInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+// OzoneObjectStores returns a OzoneObjectStoreInformer.
+func (v *version) OzoneObjectStores() OzoneObjectStoreInformer {
+	return &ozoneObjectStoreInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

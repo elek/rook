@@ -28,8 +28,8 @@ type FakeOzoneV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeOzoneV1alpha1) ObjectStores(namespace string) v1alpha1.ObjectStoreInterface {
-	return &FakeObjectStores{c, namespace}
+func (c *FakeOzoneV1alpha1) OzoneObjectStores(namespace string) v1alpha1.OzoneObjectStoreInterface {
+	return &FakeOzoneObjectStores{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

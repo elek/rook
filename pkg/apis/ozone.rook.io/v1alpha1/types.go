@@ -30,23 +30,21 @@ import (
 // +genclient
 // +genclient:noStatus
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-type ObjectStore struct {
+type OzoneObjectStore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata"`
-	Spec              ObjectStoreSpec `json:"spec"`
+	Spec              OzoneObjectStoreSpec `json:"spec"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-type ObjectStoreList struct {
+type OzoneObjectStoreList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
-	Items           []ObjectStore `json:"items"`
+	Items           []OzoneObjectStore `json:"items"`
 }
 
 // ObjectStoreSpec represent the spec of a Minio object store.
-type ObjectStoreSpec struct {
+type OzoneObjectStoreSpec struct {
 	// The version information that instructs Rook to orchestrate a particular version of Ozone.
 	OzoneVersion OzoneVersionSpec `json:"ozoneVersion,omitempty"`
 

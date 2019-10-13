@@ -27,7 +27,7 @@ import (
 
 type OzoneV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	ObjectStoresGetter
+	OzoneObjectStoresGetter
 }
 
 // OzoneV1alpha1Client is used to interact with features provided by the ozone.rook.io group.
@@ -35,8 +35,8 @@ type OzoneV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *OzoneV1alpha1Client) ObjectStores(namespace string) ObjectStoreInterface {
-	return newObjectStores(c, namespace)
+func (c *OzoneV1alpha1Client) OzoneObjectStores(namespace string) OzoneObjectStoreInterface {
+	return newOzoneObjectStores(c, namespace)
 }
 
 // NewForConfig creates a new OzoneV1alpha1Client for the given config.

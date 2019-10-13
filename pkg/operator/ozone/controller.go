@@ -19,8 +19,11 @@ package ozone
 
 import (
 	"bytes"
+	"os"
+	"reflect"
+
 	"github.com/coreos/pkg/capnslog"
-	"github.com/elek/flekszible/api"
+	flekszible "github.com/elek/flekszible/api"
 	"github.com/elek/flekszible/api/data"
 	"github.com/elek/flekszible/api/processor"
 	opkit "github.com/rook/operator-kit"
@@ -35,8 +38,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/client-go/tools/cache"
-	"os"
-	"reflect"
 )
 
 const (
@@ -53,7 +54,7 @@ var ObjectStoreResource = opkit.CustomResource{
 	Group:   ozonev1alpha1.CustomResourceGroup,
 	Version: ozonev1alpha1.Version,
 	Scope:   apiextensionsv1beta1.NamespaceScoped,
-	Kind:    reflect.TypeOf(ozonev1alpha1.ObjectStore{}).Name(),
+	Kind:    reflect.TypeOf(ozonev1alpha1.OzoneObjectStore{}).Name(),
 }
 
 // Controller represents a controller object for object store custom resources
@@ -85,13 +86,13 @@ func (c *Controller) StartWatch(namespace string, stopCh chan struct{}) error {
 
 	logger.Infof("start watching object store resources in namespace %s", namespace)
 	watcher := opkit.NewWatcher(ObjectStoreResource, namespace, resourceHandlerFuncs, c.context.RookClientset.OzoneV1alpha1().RESTClient())
-	go watcher.Watch(&ozonev1alpha1.ObjectStore{}, stopCh)
+	go watcher.Watch(&ozonev1alpha1.OzoneObjectStore{}, stopCh)
 
 	return nil
 }
 
 //The main resource file generation logic from the CRD
-func (c *Controller) generateResources(objectStore *ozonev1alpha1.ObjectStore) error {
+func (c *Controller) generateResources(objectStore *ozonev1alpha1.OzoneObjectStore) error {
 	context, err := flekszible.Initialize(c.templateDir)
 	if err != nil {
 		return err
@@ -154,7 +155,7 @@ func (c *Controller) generateResources(objectStore *ozonev1alpha1.ObjectStore) e
 }
 
 //helper function to set the owner for k8s resoures
-func (c *Controller) setOwnerRef(objectStore *ozonev1alpha1.ObjectStore, destination *metav1.ObjectMeta) {
+func (c *Controller) setOwnerRef(objectStore *ozonev1alpha1.OzoneObjectStore, destination *metav1.ObjectMeta) {
 	ownerRef := metav1.OwnerReference{
 		APIVersion: ObjectStoreResource.Version,
 		Kind:       ObjectStoreResource.Kind,
@@ -182,7 +183,7 @@ func (c *Controller) parseRenderedResource(resource *data.Resource,
 
 //Method to be called in case of the CRD is added
 func (c *Controller) onAdd(obj interface{}) {
-	objectstore := obj.(*ozonev1alpha1.ObjectStore).DeepCopy()
+	objectstore := obj.(*ozonev1alpha1.OzoneObjectStore).DeepCopy()
 
 	logger.Infof("Ozone object store object is added/updated  %s", objectstore.Name)
 
@@ -195,20 +196,20 @@ func (c *Controller) onAdd(obj interface{}) {
 
 //Method to be called in case of the CRD is updatede
 func (c *Controller) onUpdate(oldObj, newObj interface{}) {
-	newStore := newObj.(*ozonev1alpha1.ObjectStore).DeepCopy()
+	newStore := newObj.(*ozonev1alpha1.OzoneObjectStore).DeepCopy()
 	c.onAdd(newStore)
 }
 
 //Method to be called in case of the CRD is deleted
 func (c *Controller) onDelete(obj interface{}) {
-	objectstore := obj.(*ozonev1alpha1.ObjectStore).DeepCopy()
+	objectstore := obj.(*ozonev1alpha1.OzoneObjectStore).DeepCopy()
 	logger.Infof("Delete Ozone object store %s", objectstore.Name)
 	// Cleanup is handled by the owner references set in 'onAdd' and the k8s garbage collector.
 }
 
 //helper function to generate and deploy Service after the custom transformations
 func (c *Controller) applyService(resource *data.Resource,
-	objectStore *ozonev1alpha1.ObjectStore) error {
+	objectStore *ozonev1alpha1.OzoneObjectStore) error {
 	logger.Infof("Applying Service %s", resource.Name())
 	service := corev1.Service{}
 	err := c.parseRenderedResource(resource, &service)
@@ -233,7 +234,7 @@ func (c *Controller) applyService(resource *data.Resource,
 
 //helper function to generate and deploy ConfigMap after the custom transformations
 func (c *Controller) applyConfigMap(resource *data.Resource,
-	objectStore *ozonev1alpha1.ObjectStore) error {
+	objectStore *ozonev1alpha1.OzoneObjectStore) error {
 	logger.Infof("Applying ConfigMap %s", resource.Name())
 	configMap := corev1.ConfigMap{}
 	err := c.parseRenderedResource(resource, &configMap)
@@ -257,7 +258,7 @@ func (c *Controller) applyConfigMap(resource *data.Resource,
 
 //helper function to generate and deploy StatefulSets after the custom transformations
 func (c *Controller) applyStatefulSet(resource *data.Resource,
-	objectStore *ozonev1alpha1.ObjectStore) error {
+	objectStore *ozonev1alpha1.OzoneObjectStore) error {
 	logger.Infof("Applying StatefulSet %s", resource.Name())
 	statefulSet := appsv1.StatefulSet{}
 	err := c.parseRenderedResource(resource, &statefulSet)

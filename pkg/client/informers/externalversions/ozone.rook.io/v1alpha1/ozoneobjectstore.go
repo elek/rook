@@ -31,59 +31,59 @@ import (
 	cache "k8s.io/client-go/tools/cache"
 )
 
-// ObjectStoreInformer provides access to a shared informer and lister for
-// ObjectStores.
-type ObjectStoreInformer interface {
+// OzoneObjectStoreInformer provides access to a shared informer and lister for
+// OzoneObjectStores.
+type OzoneObjectStoreInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1alpha1.ObjectStoreLister
+	Lister() v1alpha1.OzoneObjectStoreLister
 }
 
-type objectStoreInformer struct {
+type ozoneObjectStoreInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 	namespace        string
 }
 
-// NewObjectStoreInformer constructs a new informer for ObjectStore type.
+// NewOzoneObjectStoreInformer constructs a new informer for OzoneObjectStore type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewObjectStoreInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredObjectStoreInformer(client, namespace, resyncPeriod, indexers, nil)
+func NewOzoneObjectStoreInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredOzoneObjectStoreInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredObjectStoreInformer constructs a new informer for ObjectStore type.
+// NewFilteredOzoneObjectStoreInformer constructs a new informer for OzoneObjectStore type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredObjectStoreInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredOzoneObjectStoreInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options v1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.OzoneV1alpha1().ObjectStores(namespace).List(options)
+				return client.OzoneV1alpha1().OzoneObjectStores(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.OzoneV1alpha1().ObjectStores(namespace).Watch(options)
+				return client.OzoneV1alpha1().OzoneObjectStores(namespace).Watch(options)
 			},
 		},
-		&ozonerookiov1alpha1.ObjectStore{},
+		&ozonerookiov1alpha1.OzoneObjectStore{},
 		resyncPeriod,
 		indexers,
 	)
 }
 
-func (f *objectStoreInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredObjectStoreInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+func (f *ozoneObjectStoreInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
+	return NewFilteredOzoneObjectStoreInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
-func (f *objectStoreInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&ozonerookiov1alpha1.ObjectStore{}, f.defaultInformer)
+func (f *ozoneObjectStoreInformer) Informer() cache.SharedIndexInformer {
+	return f.factory.InformerFor(&ozonerookiov1alpha1.OzoneObjectStore{}, f.defaultInformer)
 }
 
-func (f *objectStoreInformer) Lister() v1alpha1.ObjectStoreLister {
-	return v1alpha1.NewObjectStoreLister(f.Informer().GetIndexer())
+func (f *ozoneObjectStoreInformer) Lister() v1alpha1.OzoneObjectStoreLister {
+	return v1alpha1.NewOzoneObjectStoreLister(f.Informer().GetIndexer())
 }
