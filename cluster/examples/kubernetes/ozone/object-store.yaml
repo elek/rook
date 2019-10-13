@@ -1,5 +1,5 @@
 apiVersion: ozone.rook.io/v1alpha1
-kind: ObjectStore
+kind: OzoneObjectStore
 metadata:
   name: my-store
 spec:

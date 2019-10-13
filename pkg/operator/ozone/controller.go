@@ -129,7 +129,6 @@ func (c *Controller) generateResources(objectStore *ozonev1alpha1.OzoneObjectSto
 	if err != nil {
 		return err
 	}
-	println(context)
 	for _, resource := range resources {
 		switch kind := resource.Kind(); kind {
 		case "StatefulSet":
@@ -159,7 +158,7 @@ func (c *Controller) setOwnerRef(objectStore *ozonev1alpha1.OzoneObjectStore, de
 	ownerRef := metav1.OwnerReference{
 		APIVersion: ObjectStoreResource.Version,
 		Kind:       ObjectStoreResource.Kind,
-		Name:       objectStore.Namespace,
+		Name:       objectStore.Name,
 		UID:        types.UID(objectStore.ObjectMeta.UID),
 	}
 	k8sutil.SetOwnerRef(destination, &ownerRef)
@@ -194,7 +193,7 @@ func (c *Controller) onAdd(obj interface{}) {
 
 }
 
-//Method to be called in case of the CRD is updatede
+//Method to be called in case of the CRD is updated
 func (c *Controller) onUpdate(oldObj, newObj interface{}) {
 	newStore := newObj.(*ozonev1alpha1.OzoneObjectStore).DeepCopy()
 	c.onAdd(newStore)
