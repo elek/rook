@@ -43,7 +43,7 @@ type OzoneObjectStoreList struct {
 	Items           []OzoneObjectStore `json:"items"`
 }
 
-// ObjectStoreSpec represent the spec of a Minio object store.
+// ObjectStoreSpec represent the spec of a Ozone object store.
 type OzoneObjectStoreSpec struct {
 	// The version information that instructs Rook to orchestrate a particular version of Ozone.
 	OzoneVersion OzoneVersionSpec `json:"ozoneVersion,omitempty"`

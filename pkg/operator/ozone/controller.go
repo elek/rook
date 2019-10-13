@@ -41,8 +41,8 @@ import (
 )
 
 const (
-	customResourceName       = "objectstore"
-	customResourceNamePlural = "objectstores"
+	customResourceName       = "ozoneobjectstore"
+	customResourceNamePlural = "ozoneobjectstores"
 )
 
 var logger = capnslog.NewPackageLogger("github.com/rook/rook", "ozone-op-object")
@@ -93,7 +93,7 @@ func (c *Controller) StartWatch(namespace string, stopCh chan struct{}) error {
 
 //The main resource file generation logic from the CRD
 func (c *Controller) generateResources(objectStore *ozonev1alpha1.OzoneObjectStore) error {
-	context, err := flekszible.Initialize(c.templateDir)
+	_, err := flekszible.Initialize(c.templateDir)
 	if err != nil {
 		return err
 	}
